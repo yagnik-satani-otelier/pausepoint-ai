@@ -4,8 +4,6 @@ published: false
 tags: devchallenge, hf26challenge, ai, opensource
 ---
 
-# PausePoint: A Local Gemma Resume Capsule for Interrupted Developers 🦥
-
 I lose time twice when I switch tasks: once when I stop, then again when I return and try to remember what I was doing.
 
 For Week 3's **Slow and Steady** theme, I built **PausePoint**, a local-first interruption-recovery assistant for developers. Instead of asking AI to keep working in the background, PausePoint helps me leave a useful breadcrumb trail so I can step away and return without reconstructing the whole session.
