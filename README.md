@@ -18,7 +18,7 @@ Built for the Hacktoberfest 2026 DEV Challenge Week 3 theme: **Slow and Steady**
 
 PausePoint is not a generic task manager, inbox summarizer, or AI agent that keeps working while you're away. Its job is to make interruptions less expensive. It keeps the output small and distinguishes supplied/observed facts from uncertain items. The model is asked not to invent test results, file changes, or commands. Git metadata comes from local, read-only commands rather than model guesses.
 
-The AI output is still fallible. Inspect the resume capsule before acting, and verify the working tree when you return. PausePoint does not run commands from generated output.
+The AI output is still fallible. A deterministic post-processing step anchors the stopping point, verified facts, uncertainties, and next steps to the user notes rather than allowing unrelated filenames or commit subjects to redefine the task. Git commit messages and filenames remain secondary diagnostic context. Inspect the resume capsule before acting, and verify the working tree when you return. PausePoint does not run commands from generated output.
 
 ## Run locally
 
@@ -53,7 +53,7 @@ npm run check
 npm test
 ```
 
-The 16 native tests cover bounded input validation, prompt-injection-as-data handling, separation of verified and uncertain facts, bounded JSON parsing, honest template fallback, server headers, mocked Ollama schema generation, malformed/oversized API bodies, Git snapshot read-only flow, non-repository handling, and path traversal rejection. The mocked API tests do not replace a manual test with the real Gemma weights.
+The 17 native tests cover bounded input validation, prompt-injection-as-data handling, separation of verified and uncertain facts, bounded JSON parsing, honest template fallback, user-note priority over unrelated Git filenames/commit subjects, server headers, mocked Ollama schema generation, malformed/oversized API bodies, Git snapshot read-only flow, non-repository handling, and path traversal rejection. The mocked API tests do not replace a manual test with the real Gemma weights.
 
 ## Privacy and safety
 

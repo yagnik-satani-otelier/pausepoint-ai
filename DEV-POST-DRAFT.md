@@ -20,7 +20,7 @@ Saved capsules stay in the current browser's local storage. They can be reopened
 
 ## How the AI is used
 
-PausePoint uses **Gemma 3 1B through Ollama** for the capsule-generation path. The server sends an explicit JSON schema to Ollama to keep the output shape predictable. The prompt instructs the model not to invent changed files, test results, commands, or repository state, and to keep unverified information separate from verified facts. Those instructions help, but they are not proof: the result still needs review.
+PausePoint uses **Gemma 3 1B through Ollama** for the capsule-generation path. The server sends an explicit JSON schema to Ollama to keep the output shape predictable. The prompt instructs the model not to invent changed files, test results, commands, or repository state, and to keep unverified information separate from verified facts. During my first real Gemma smoke test, the model over-weighted an unrelated filename and commit subjects from the Git snapshot. I added deterministic post-processing so the user's own goal and stopping point take priority, verified items are limited to user-reported checks and captured branch facts, and generated commands are not displayed as if the user supplied them. Those safeguards help, but the capsule still needs review.
 
 The app has an honest template fallback. If Ollama or the model isn't available, the UI says `TEMPLATE MODE`. It does not label a fallback as an AI result.
 
@@ -32,9 +32,9 @@ The trade-off is real: the user must install Ollama and a model, and a small mod
 
 ## What I tested
 
-- The native Node test suite covers bounded inputs, prompt-injection-as-data handling, parsing, fallback honesty, HTTP errors, and the read-only Git snapshot path.
-- The HTTP integration tests use a mocked Ollama endpoint to test the server bridge and expected schema. They do not establish the quality of real model output.
-- **Before publishing this article, replace this paragraph with the real local smoke-test result:** run PausePoint with Ollama/Gemma installed, generate a capsule, confirm the `LOCAL AI` label, and capture a genuine screen recording. Do not claim live Gemma testing until it is completed on the target machine.
+- The native Node test suite has 17 passing tests, including a regression test for model output that drifts toward unrelated Git filenames or commit subjects.
+- The HTTP integration tests use a mocked Ollama endpoint to test the server bridge and expected schema. They do not establish the general quality of real model output.
+- I ran PausePoint on Windows with Ollama and Gemma 3 1B installed and saw a generated capsule labelled `LOCAL AI`. The first result exposed an output-quality issue around unrelated Git context, so I added deterministic guardrails. The updated guardrails still need a second real-model smoke test before I claim the fix resolves that behavior.
 - I have not conducted a user study or customer trial, so I make no claim about measured time savings or willingness to pay.
 
 ## Demo and code

@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
 const { URL } = require('node:url');
-const { validatePayload, buildPrompt, parseCapsule, fallbackCapsule } = require('./lib/core');
+const { validatePayload, buildPrompt, parseCapsule, fallbackCapsule, enforceCapsuleGuardrails } = require('./lib/core');
 
 const ROOT = path.join(__dirname, 'public');
 const PORT = Number(process.env.PORT) || 4175;
@@ -107,7 +107,7 @@ async function generateCapsule(input) {
     });
     if (!response.ok) throw new Error(`Ollama returned HTTP ${response.status}.`);
     const body = await response.json();
-    const capsule = parseCapsule(body.response);
+    const capsule = enforceCapsuleGuardrails(parseCapsule(body.response), payload);
     return { mode: 'local-ai', model: MODEL, capsule, notice: 'Generated with local Ollama inference. Check every fact before resuming.' };
   } catch (error) {
     return { mode: 'template', model: null, capsule: fallbackCapsule(payload), notice: `Local AI output could not be used (${String(error.message).slice(0, 110)}). Used built-in template instead.` };
