@@ -81,9 +81,11 @@ For a short screen recording:
 
 A customer trial is not required to describe the project honestly. If you test it with another developer, report their actual feedback rather than inventing a testimonial.
 
-## Optional static Vercel preview
+## Live Vercel preview
 
-To deploy an interface-only demo, import the repository into Vercel and choose the **Other** preset with no build command and the output directory set to `public`. The hosted preview will use the browser template when `/api/capsule` is unavailable. Local Gemma inference and real local Git snapshots require the Node server running on the same PC, so use a local screen recording to demonstrate those parts. Verify the deployed URL after publishing.
+**Live web demo:** https://pausepoint-ai.vercel.app/
+
+The Vercel deployment serves the interface and browser template fallback. It cannot access Ollama or a local Git repository on your PC. For real Gemma inference and read-only local Git capture, run the Node server locally using the instructions above. Verify that the deployed URL is accessible before sharing it.
 
 ## License
 
