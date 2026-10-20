@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172e29">
+  <meta name="description" content="Pause work without losing your place. A local-first interruption-recovery assistant for developers.">
+  <title>PausePoint — Pick up without the rework</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/fallback.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="PausePoint home"><span class="brand-mark">p<span>.</span></span><span><strong>PausePoint</strong><small>WORK, PICKED UP</small></span></a>
+      <div class="sidebar-note"><span class="note-icon">↗</span><div><strong>Pause without losing the thread.</strong><p>Your work context, ready when you return.</p></div></div>
+      <nav aria-label="Main navigation">
+        <span class="nav-label">WORKSPACE</span>
+        <button class="nav-item active" data-scroll="capture"><span>◫</span> Capture a pause</button>
+        <button class="nav-item" data-scroll="history"><span>◷</span> Resume history <b id="historyCount">0</b></button>
+        <button class="nav-item" data-action="export"><span>⇩</span> Export capsules</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="privacy-mark"><span class="privacy-dot"></span><strong>Private by design</strong></div><p>Notes stay in this browser. AI runs through local Ollama. Git access is read-only.</p><div class="model-state"><span id="statusDot" class="status-dot"></span><span id="modelStatus">Checking local model…</span></div></div>
+    </aside>
+    <main id="top" class="main-content">
+      <header class="topbar"><div class="breadcrumbs">Workspace <span>/</span> <strong>PausePoint</strong></div><div class="top-actions"><span class="local-pill"><span></span> LOCAL-FIRST</span><button class="icon-button" id="aboutButton" aria-label="About PausePoint">i</button></div></header>
+      <section class="hero"><div class="hero-copy"><p class="eyebrow"><span class="sparkle">✳</span> A SMALL PAUSE, A SOFTER RETURN</p><h1>Pick up where<br><em>your mind left off.</em></h1><p class="hero-sub">Capture the context before you switch tasks. Come back to a clear next step, not a detective story.</p><div class="hero-actions"><button class="primary-button" data-scroll="capture">＋ Capture this moment <span>↗</span></button><span class="hero-footnote">No repo edits. No commits. No cloud AI.</span></div></div><div class="hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="moon-card"><span class="moon">☾</span><span>you can<br>come back<br>to this.</span></div><div class="sticky sticky-main"><span class="sticky-tag">NEXT TIME</span><strong>Start with<br>one small thing.</strong><span class="sticky-arrow">↘</span></div><div class="sticky sticky-mini"><span>✓</span> No need to<br>remember it all</div><div class="leaf leaf-one">✳</div><div class="leaf leaf-two">✴</div></div></section>
+      <section class="pulse-grid" aria-label="Workspace summary"><article class="pulse-card"><span class="pulse-label">SAVED CAPSULES</span><strong id="savedCount">0</strong><p>Your context, kept close.</p></article><article class="pulse-card"><span class="pulse-label">CURRENT MODEL</span><strong id="modelCard">Checking…</strong><p id="modelCardSub">Local runtime status</p></article><article class="pulse-card"><span class="pulse-label">THE PROMISE</span><strong>Read-only</strong><p>We observe your repo, never change it.</p></article></section>
+      <section class="work-grid" id="capture">
+        <article class="panel capture-panel"><div class="panel-heading"><div class="step-number">01</div><div><h2>Leave yourself a note</h2><p>A few rough details are enough. Don't write a report.</p></div></div>
+          <form id="captureForm">
+            <div class="field-row"><label class="field grow">Project or repo name<input id="projectName" maxlength="100" placeholder="e.g. NailFlow AI" value="My project"></label><label class="field field-tone">Tone<select id="tone"><option value="calm">Calm</option><option value="direct">Direct</option><option value="encouraging">Encouraging</option></select></label></div>
+            <label class="field">What were you trying to do?<span class="field-help">The goal, not a full explanation</span><textarea id="goal" rows="2" maxlength="500" placeholder="Fix the local AI response format in the quote endpoint…"></textarea></label>
+            <label class="field">Where did you stop?<textarea id="stoppedAt" rows="2" maxlength="1200" placeholder="The UI generates a quote, but I still need to verify persistence after reload…"></textarea></label>
+            <label class="field">What changed? <span class="field-help">Only what you actually changed</span><textarea id="changed" rows="2" maxlength="1200" placeholder="Updated server schema; haven't committed yet…"></textarea></label>
+            <div class="field-row"><label class="field grow">What have you verified?<textarea id="verified" rows="2" maxlength="1000" placeholder="npm test passes; manual browser test not done…"></textarea></label><label class="field grow">What is still uncertain?<textarea id="unverified" rows="2" maxlength="1000" placeholder="Need to check if the bug also occurs on mobile…"></textarea></label></div>
+            <label class="field">Blocker or loose end<textarea id="blocker" rows="2" maxlength="1000" placeholder="Model sometimes returns invalid JSON…"></textarea></label>
+            <div class="field-row"><label class="field grow">One next-step hint <span class="field-help">Optional</span><input id="nextHint" maxlength="1000" placeholder="Re-run one quote with a known sample"></label></div>
+            <div class="git-section"><div class="git-heading"><div><strong>Attach real Git context</strong><p>Local server only. Reads status, branch, diff summary and recent commits.</p></div><span class="read-only">READ ONLY</span></div><label class="field">Local repository folder<input id="repoPath" maxlength="800" placeholder="D:\practice\your-project"></label><button type="button" class="secondary-button git-button" id="captureGit">↳ Read Git status</button><p id="gitNotice" class="inline-notice" role="status">No repository snapshot attached.</p><pre id="gitPreview" class="git-preview hidden"></pre></div>
+            <div class="form-footer"><p><span class="tiny-lock">▣</span> Your notes are sent only to local Ollama when local AI is available. Otherwise a template is used.</p><button type="submit" class="primary-button" id="generateButton">Make my resume capsule <span>✦</span></button></div>
+          </form>
+        </article>
+        <article class="panel result-panel"><div class="panel-heading result-heading"><div class="step-number lavender">02</div><div><h2>Your resume capsule</h2><p>Clear enough for future-you. Honest about unknowns.</p></div></div><div id="emptyState" class="empty-state"><div class="empty-illustration"><div class="empty-sheet"><span>PAUSE NOTE</span><i></i><i></i><i></i><b>↘</b></div><div class="empty-sun">☼</div></div><h3>Give future-you a hand.</h3><p>Write a few rough notes on the left, then let PausePoint shape a gentle handoff.</p><ul><li><span>✓</span> Facts stay separate from unknowns</li><li><span>✓</span> One small next step</li><li><span>✓</span> Saved on this device</li></ul></div><div id="resultArea" class="result-area hidden"></div><div id="resultActions" class="result-actions hidden"><button id="saveButton" class="primary-button">Save capsule <span>↓</span></button><button id="copyButton" class="secondary-button">Copy resume prompt</button><button id="downloadButton" class="text-button">Download .md</button></div><div class="result-foot"><span class="result-foot-icon">✳</span><p><strong>A gentle rule:</strong> a model can organize your notes, but it can't prove a test passed or know what changed without evidence.</p></div></article>
+      </section>
+      <section class="history-section" id="history"><div class="section-head"><div><p class="eyebrow">YOUR THREAD, KEPT</p><h2>Resume history</h2><p>Saved locally in this browser. Export a backup whenever you like.</p></div><div class="history-actions"><button class="secondary-button" data-action="export">Export JSON</button><button class="text-button" id="clearHistory">Clear history</button></div></div><div id="historyList" class="history-list"><div class="history-empty"><span>◷</span><strong>Nothing saved yet</strong><p>Your first capsule will live here.</p></div></div></section>
+      <footer class="footer"><span class="brand-mini">p.</span><span>PausePoint · Built for the space between tasks.</span><span class="footer-right">OPEN WEIGHTS · LOCAL FIRST · NO REPO WRITES</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="aboutDialog"><div class="dialog-content"><button class="dialog-close" id="closeAbout" aria-label="Close">×</button><p class="eyebrow">A CALMER RETURN</p><h2>PausePoint doesn't do the work for you.</h2><p>It helps you leave a reliable breadcrumb trail so you don't have to reconstruct your thoughts later.</p><div class="dialog-points"><p>✳ Local Gemma turns notes into a compact handoff.</p><p>✳ Git snapshot uses read-only commands only.</p><p>✳ Capsules remain in browser storage until you export or clear them.</p><p>✳ Generated facts must be reviewed before acting.</p></div><button id="closeAboutBottom" class="primary-button">Got it</button></div></dialog>
+</body>
+</html>
