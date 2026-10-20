@@ -34,19 +34,21 @@ During my first real Gemma smoke test, the model over-weighted an unrelated file
 
 If Ollama or the model isn't available, the UI says `TEMPLATE MODE`; it doesn't pretend fallback content came from AI.
 
+## The Lazy Payoff
+
+I used PausePoint while working on this challenge to capture where I had stopped, what I had verified, and what I still needed to check. Attaching the NailFlow Git snapshot added branch and recent-commit context without making any repository changes. The result gave me a saved place to resume instead of relying on memory or rereading everything from scratch.
+
+I have not measured exact minutes saved or tested it with other developers, so I won't claim a quantified productivity improvement. The intended payoff is a smaller restart cost: leave a useful note in a short pause, then return to one clear next step.
+
 ## Why Does Open Innovation Matter?
 
 A return-from-interruption tool may contain unfinished work notes, branch names, blockers, and other context I'd rather not send to an unrelated cloud service. With local inference, prompts can stay on the machine running Ollama. The user can inspect the prompts, alter the logic, and choose their local model instead of depending on a hosted API key or per-call bill.
 
 The trade-off is real: the user must install Ollama and a model, and a small model can misread notes or propose a poor next step. That's why PausePoint separates facts from uncertainty, keeps Git access read-only, and reminds users to verify state before acting. Open weights are not automatically the same as OSI-approved open-source software; review the model's license separately.
 
-## My Agent Session
-
-I did not capture a DevRelay session for this project, so there is no session link to share.
-
 ## Prize Categories
 
-**Best Use of Gemma** — PausePoint uses Gemma 3 1B through Ollama as its local resume-capsule generation model.
+- **Best Use of Gemma** — PausePoint uses Gemma 3 1B through Ollama as its local resume-capsule generation model.
 
 ## What I Tested
 
